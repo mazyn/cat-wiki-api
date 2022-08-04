@@ -9,10 +9,10 @@ import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 
 import { AppModule } from './app.module';
+import { IPrismaService } from 'domain/db/prisma.service.interface';
 import { HttpExceptionFilter } from 'infra/rest/http-exception.filter';
 import { LoggingInterceptor } from 'infra/rest/logging.interceptor';
 import { ValidationPipe } from 'infra/rest/validation.pipe';
-import { PrismaService } from 'infra/db/prisma.service';
 
 declare const module: any;
 
@@ -23,7 +23,7 @@ async function bootstrap() {
     });
 
     // Prisma enableShutdownHooks fix
-    const prismaService = app.get(PrismaService);
+    const prismaService = app.get(IPrismaService);
     await prismaService.enableShutdownHooks(app);
 
     const configService = app.get(ConfigService);
