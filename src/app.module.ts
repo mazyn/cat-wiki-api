@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 
+import { CatApiModule } from './infra/ioc/cat-api.module';
+
 @Module({
-  imports: [],
+  imports: [CatApiModule],
   controllers: [],
   providers: [],
 })
