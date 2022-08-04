@@ -12,6 +12,7 @@ import { AppModule } from './app.module';
 import { HttpExceptionFilter } from 'infra/rest/http-exception.filter';
 import { LoggingInterceptor } from 'infra/rest/logging.interceptor';
 import { ValidationPipe } from 'infra/rest/validation.pipe';
+import { PrismaService } from 'infra/db/prisma.service';
 
 declare const module: any;
 
@@ -20,6 +21,10 @@ async function bootstrap() {
     const app = await NestFactory.create(AppModule, {
       cors: true,
     });
+
+    // Prisma enableShutdownHooks fix
+    const prismaService = app.get(PrismaService);
+    await prismaService.enableShutdownHooks(app);
 
     const configService = app.get(ConfigService);
 
