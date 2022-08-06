@@ -22,12 +22,6 @@ async function bootstrap() {
       cors: true,
     });
 
-    // Prisma enableShutdownHooks fix
-    const prismaService = app.get(IPrismaService);
-    await prismaService.enableShutdownHooks(app);
-
-    const configService = app.get(ConfigService);
-
     Logger.log(
       `Environment: ${chalk
         .hex('#87e8de')
@@ -35,6 +29,37 @@ async function bootstrap() {
       'Bootstrap',
     );
 
+    // Prisma enableShutdownHooks fix
+    const prismaService = app.get(IPrismaService);
+    await prismaService.enableShutdownHooks(app);
+
+    // APP Definition
+    const configService = app.get(ConfigService);
+    const APP_NAME = configService.get('APP_NAME');
+    const APP_DESCRIPTION = configService.get('APP_DESCRIPTION');
+    const API_VERSION = configService.get('API_VERSION', 'v1');
+
+    // REST Global configurations
+    app.setGlobalPrefix(`/${API_VERSION}`);
+    app.useGlobalInterceptors(new LoggingInterceptor());
+    app.useGlobalFilters(new HttpExceptionFilter());
+    app.useGlobalPipes(new ValidationPipe());
+
+    // Swagger configuration
+    const options = new DocumentBuilder()
+      .setTitle(APP_NAME)
+      .setDescription(APP_DESCRIPTION)
+      .setVersion(API_VERSION)
+      .build();
+
+    const document = SwaggerModule.createDocument(app, options);
+    SwaggerModule.setup('api', app, document);
+    SwaggerModule.setup('/', app, document);
+
+    Logger.log('Mapped {/, GET} Swagger api route', 'RouterExplorer');
+    Logger.log('Mapped {/api, GET} Swagger api route', 'RouterExplorer');
+
+    // Security and performance
     app.use(helmet());
     app.use(compression());
     app.use(bodyParser.json({ limit: '50mb' }));
@@ -54,27 +79,6 @@ async function bootstrap() {
       }),
     );
 
-    // REST Global configurations
-    app.useGlobalInterceptors(new LoggingInterceptor());
-    app.useGlobalFilters(new HttpExceptionFilter());
-    app.useGlobalPipes(new ValidationPipe());
-
-    const APP_NAME = configService.get('APP_NAME');
-    const APP_DESCRIPTION = configService.get('APP_DESCRIPTION');
-    const API_VERSION = configService.get('API_VERSION', 'v1');
-    const options = new DocumentBuilder()
-      .setTitle(APP_NAME)
-      .setDescription(APP_DESCRIPTION)
-      .setVersion(API_VERSION)
-      .build();
-
-    const document = SwaggerModule.createDocument(app, options);
-    SwaggerModule.setup('api', app, document);
-    SwaggerModule.setup('/', app, document);
-
-    Logger.log('Mapped {/, GET} Swagger api route', 'RouterExplorer');
-    Logger.log('Mapped {/api, GET} Swagger api route', 'RouterExplorer');
-
     const HOST = configService.get('HOST', 'localhost');
     const PORT = configService.get('PORT', '3000');
 
@@ -86,14 +90,12 @@ async function bootstrap() {
             .hex('#87e8de')
             .bold(`${PORT}`)}`,
           'Bootstrap',
-          false,
         )
       : Logger.log(
           `🚀 Server is listening on port ${chalk
             .hex('#87e8de')
             .bold(`${PORT}`)}`,
           'Bootstrap',
-          false,
         );
 
     if (module.hot) {
@@ -101,12 +103,12 @@ async function bootstrap() {
       module.hot.dispose(() => app.close());
     }
   } catch (error) {
-    Logger.error(`❌ Error starting server, ${error}`, 'Bootstrap', false);
+    Logger.error(`❌ Error starting server, ${error}`, 'Bootstrap');
     process.exit();
   }
 }
 
 bootstrap().catch((e) => {
-  Logger.error(`❌ Error starting server, ${e}`, 'Bootstrap', false);
+  Logger.error(`❌ Error starting server, ${e}`, 'Bootstrap');
   throw e;
 });

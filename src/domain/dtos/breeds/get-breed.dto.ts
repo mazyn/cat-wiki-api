@@ -1,0 +1,31 @@
+export class GetBreedDto {
+  id: string;
+  name: string;
+  temperament: string;
+  lifeSpan: string;
+  altNames: string;
+  wikipediaUrl: string;
+  origin: string;
+  weightImperial: string;
+  experimental: number;
+  hairless: number;
+  natural: number;
+  rare: number;
+  rex: number;
+  suppressTail: number;
+  shortLegs: number;
+  hypoallergenic: number;
+  adaptability: number;
+  affectionLevel: number;
+  countryCode: string;
+  childFriendly: number;
+  dogFriendly: number;
+  energyLevel: number;
+  grooming: number;
+  healthIssues: number;
+  intelligence: number;
+  sheddingLevel: number;
+  socialNeeds: number;
+  strangerFriendly: number;
+  vocalisation: number;
+}

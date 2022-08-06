@@ -12,7 +12,7 @@ export interface GetManyParams<C, W, O> {
 
 @Injectable()
 export abstract class IBaseService<Entity> {
-  constructor(protected readonly prisma: IPrismaService) {}
+  protected constructor(protected readonly prisma: IPrismaService) {}
 
   abstract get<T>(whereUniqueInput: T): Promise<Entity | null>;
 
