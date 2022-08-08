@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 
 import { HttpModule } from '../rest/http.module';
-import { ICatApiService } from '../../domain/services/cat-api.service.interface';
-import { CatApiService } from '../services/cat-api.service';
-import { CatApiController } from '../../application/controllers/cat-api.controller';
-import { CatApiUseCases } from '../../application/use-cases/cat-api.use-cases';
+import { ICatApiService } from '../../domain/services';
+import { CatApiService } from '../services';
+import { CatApiController } from '../../application/controllers';
+import { CatApiUseCases } from '../../application/use-cases';
 
 @Module({
   imports: [HttpModule],
@@ -13,5 +13,6 @@ import { CatApiUseCases } from '../../application/use-cases/cat-api.use-cases';
     { provide: ICatApiService, useClass: CatApiService },
     CatApiUseCases,
   ],
+  exports: [ICatApiService],
 })
 export class CatApiModule {}

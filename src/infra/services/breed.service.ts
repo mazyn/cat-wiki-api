@@ -2,13 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Breed, Prisma } from '@prisma/client';
 
 import { IPrismaService } from 'domain/db/prisma.service.interface';
-import {
-  GetManyParams,
-  IBaseService,
-} from 'domain/services/base.service.interface';
+import { IBreedService, GetManyParams } from '../../domain/services';
 
 @Injectable()
-export class BreedService extends IBaseService<Breed> {
+export class BreedService extends IBreedService {
   constructor(prisma: IPrismaService) {
     super(prisma);
   }

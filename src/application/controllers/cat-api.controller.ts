@@ -3,15 +3,14 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
-  ApiParam,
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
 import { Observable } from 'rxjs';
 
 import { CatApiUseCases } from '../use-cases/cat-api.use-cases';
-import { GetBreedDto } from '../../domain/dtos/breeds/get-breed.dto';
-import { GetBreedPhotoDto } from '../../domain/dtos/breeds/get-breed-photo.dto';
+import { GetBreedDto } from '../../domain/dtos/cat-api/get-breed.dto';
+import { GetBreedPhotoDto } from '../../domain/dtos/cat-api/get-breed-photo.dto';
 import { NotFoundError } from '../errors/not-found.error';
 
 @ApiTags('Cat API')
@@ -21,7 +20,11 @@ export class CatApiController {
 
   @Get('breeds')
   @ApiOperation({ summary: 'Return a list of cat breeds' })
-  @ApiOkResponse({ description: 'All breeds fetched', type: GetBreedDto })
+  @ApiOkResponse({
+    description: 'All breeds fetched',
+    type: GetBreedDto,
+    isArray: true,
+  })
   @ApiNotFoundResponse({ description: 'Breeds not found', type: NotFoundError })
   getBreeds(): Observable<GetBreedDto[]> {
     return this.catApiUseCases.getBreeds();
@@ -43,7 +46,11 @@ export class CatApiController {
     allowEmptyValue: true,
     required: false,
   })
-  @ApiOkResponse({ description: 'All photos fetched', type: GetBreedPhotoDto })
+  @ApiOkResponse({
+    description: 'All photos fetched',
+    type: GetBreedPhotoDto,
+    isArray: true,
+  })
   @ApiNotFoundResponse({
     description: 'Breed photos not found',
     type: NotFoundError,

@@ -25,4 +25,11 @@ export class NotFoundError {
     example: '/users/12',
   })
   path: string;
+
+  constructor(message?: string, path?: string) {
+    this.statusCode = HttpStatus.NOT_FOUND;
+    this.timestamp = new Date();
+    this.message = message;
+    this.path = path;
+  }
 }
