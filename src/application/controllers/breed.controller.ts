@@ -16,7 +16,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { NotFoundError } from 'application/errors/not-found.error';
+import { InternalServerError, NotFoundError } from 'application/errors';
 import { BreedUseCases } from 'application/use-cases';
 import { GetMostSearchedDto } from 'domain/dtos/breed';
 import { IncreaseSearchCountDtoRequest } from 'domain/dtos/breed/increase-search-count.dto';
@@ -54,9 +54,15 @@ export class BreedController {
   })
   @ApiInternalServerErrorResponse({
     description: 'Something went wrong while updating the search count',
-    type: InternalServerErrorException,
+    type: InternalServerError,
   })
   increaseSearchCount(@Body() { externalId }: IncreaseSearchCountDtoRequest) {
-    this.breedUseCases.increaseSearchCount(externalId);
+    try {
+      this.breedUseCases.increaseSearchCount(externalId);
+    } catch (e) {
+      if (e instanceof InternalServerErrorException)
+        return new InternalServerError(e.message);
+      throw e;
+    }
   }
 }

@@ -7,7 +7,7 @@ import { map, take } from 'rxjs';
 
 import { GetMostSearchedDto } from 'domain/dtos/breed';
 import { IBreedService, ICatApiService } from 'domain/services';
-import { NotFoundError } from 'application/errors/not-found.error';
+import { NotFoundError } from 'application/errors';
 
 @Injectable()
 export class BreedUseCases {

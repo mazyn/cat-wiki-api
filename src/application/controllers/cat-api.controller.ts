@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 import { CatApiUseCases } from '../use-cases/cat-api.use-cases';
 import { GetBreedDto } from '../../domain/dtos/cat-api/get-breed.dto';
 import { GetBreedPhotoDto } from '../../domain/dtos/cat-api/get-breed-photo.dto';
-import { NotFoundError } from '../errors/not-found.error';
+import { NotFoundError } from '../errors';
 
 @ApiTags('Cat API')
 @Controller('cat-api')
