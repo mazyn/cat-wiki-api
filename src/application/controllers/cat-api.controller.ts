@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 
 import { CatApiUseCases } from '../use-cases/cat-api.use-cases';
 import { GetBreedDto } from '../../domain/dtos/cat-api/get-breed.dto';
-import { GetBreedPhotoDto } from '../../domain/dtos/cat-api/get-breed-photo.dto';
+import { GetBreedPhotosDto } from '../../domain/dtos/cat-api/get-breed-photos.dto';
 import { NotFoundError } from '../errors';
 
 @ApiTags('Cat API')
@@ -48,7 +48,7 @@ export class CatApiController {
   })
   @ApiOkResponse({
     description: 'All photos fetched',
-    type: GetBreedPhotoDto,
+    type: GetBreedPhotosDto,
     isArray: true,
   })
   @ApiNotFoundResponse({
@@ -58,7 +58,7 @@ export class CatApiController {
   getBreedPhotos(
     @Query('b') breedId: string,
     @Query('limit') limit: number,
-  ): Observable<GetBreedPhotoDto[]> {
+  ): Observable<GetBreedPhotosDto> {
     return this.catApiUseCases.getBreedPhotos(breedId, limit);
   }
 }

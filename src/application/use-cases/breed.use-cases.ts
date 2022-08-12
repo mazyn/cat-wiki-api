@@ -41,12 +41,7 @@ export class BreedUseCases {
             return breeds.indexOf(bBreed) - breeds.indexOf(aBreed);
           })
           .slice(0, 9)
-          .map((b) => {
-            const dto = new GetMostSearchedDto();
-            dto.externalId = b.id;
-            dto.name = b.name;
-            return dto;
-          });
+          .map((b) => new GetMostSearchedDto(b));
       }),
     );
   }
