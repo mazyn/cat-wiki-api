@@ -5,7 +5,7 @@ import { GetBreedDto } from './get-breed.dto';
 export class GetBreedPhotosDto extends GetBreedDto {
   @ApiProperty({
     description: 'A list of photos URLs of the breed',
-    example: "['https://cdn2.thecatapi.com/images/EHG3sOpAM.jpg']",
+    example: ['https://cdn2.thecatapi.com/images/EHG3sOpAM.jpg'],
   })
   photos: string[] = undefined;
 
