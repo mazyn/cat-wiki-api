@@ -40,7 +40,7 @@ export class BreedUseCases {
 
             return breeds.indexOf(bBreed) - breeds.indexOf(aBreed);
           })
-          .slice(0, 9)
+          .slice(0, 10)
           .map((b) => new GetMostSearchedDto(b));
       }),
     );
