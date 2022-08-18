@@ -9,6 +9,13 @@ export class GetMostSearchedDto {
   name: string;
 
   @ApiProperty({
+    description: 'A description of the cat breed',
+    example:
+      'Savannah is the feline version of a dog. Actively seeking social interaction, they are given to pouting if left out. Remaining kitten-like through life. Profoundly loyal to immediate family members whilst questioning the presence of strangers. Making excellent companions that are loyal, intelligent and eager to be involved.',
+  })
+  description: string;
+
+  @ApiProperty({
     description: "The breed's ID from the Cat API",
     example: 'sava',
   })
@@ -22,6 +29,7 @@ export class GetMostSearchedDto {
 
   constructor(partial?: Partial<CatApiBreedModel>) {
     this.name = partial?.name;
+    this.description = partial?.description;
     this.externalId = partial?.id;
     this.imageUrl = partial?.image?.url;
   }
