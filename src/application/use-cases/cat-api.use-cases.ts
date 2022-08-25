@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import pluralize from 'pluralize';
 import { map, Observable } from 'rxjs';
+import _ from 'lodash';
 
 import { ICatApiService } from '../../domain/services/cat-api.service.interface';
 import { GetBreedDto } from '../../domain/dtos/cat-api/get-breed.dto';
@@ -17,7 +18,7 @@ export class CatApiUseCases {
 
     return this.catApiService
       .getBreeds()
-      .pipe(map((breeds) => breeds.map((b) => new GetBreedDto(b))));
+      .pipe(map((breeds) => _.map(breeds, (b) => new GetBreedDto(b))));
   }
 
   getBreedPhotos(breedId: string, limit = 1): Observable<GetBreedPhotosDto> {

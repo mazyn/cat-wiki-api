@@ -4,10 +4,12 @@ import {
   Logger,
 } from '@nestjs/common';
 import { map, take } from 'rxjs';
+import _ from 'lodash';
 
 import { GetMostSearchedDto } from 'domain/dtos/breed';
 import { IBreedService, ICatApiService } from 'domain/services';
 import { NotFoundError } from 'application/errors';
+import { CatApiBreedModel } from 'domain/models/cat-api-breed.model';
 
 @Injectable()
 export class BreedUseCases {
@@ -21,27 +23,39 @@ export class BreedUseCases {
   async getMostSearched() {
     this.logger.log('Received request to fetch most searched breeds');
 
-    const breeds = await this.breedService.getMany({
+    const dbBreeds = await this.breedService.getMany({
       orderBy: {
-        searchCount: 'asc',
+        searchCount: 'desc',
       },
       take: 10,
     });
 
     return this.catApiService.getBreeds().pipe(
       map((r) => {
-        return r
-          .slice()
-          .sort((a, b) => {
-            if (breeds?.length <= 0) return 1;
+        let apiBreeds: CatApiBreedModel[] | GetMostSearchedDto[] = _.map(
+          r,
+          (b) => {
+            b['searchCount'] = _.find(
+              dbBreeds,
+              (x) => x.externalId === b.id,
+            )?.searchCount;
+            return b;
+          },
+        );
 
-            const aBreed = breeds.find((x) => x.externalId === a.id);
-            const bBreed = breeds.find((x) => x.externalId === b.id);
+        apiBreeds = _.filter(apiBreeds, (b) => !!b['searchCount']);
 
-            return breeds.indexOf(bBreed) - breeds.indexOf(aBreed);
-          })
-          .slice(0, 10)
-          .map((b) => new GetMostSearchedDto(b));
+        apiBreeds = _.orderBy(
+          apiBreeds,
+          ['searchCount', 'name'],
+          ['desc', 'asc'],
+        );
+
+        apiBreeds = _.slice(apiBreeds, 0, 10);
+
+        apiBreeds = _.map(apiBreeds, (b) => new GetMostSearchedDto(b));
+
+        return apiBreeds;
       }),
     );
   }
@@ -75,7 +89,7 @@ export class BreedUseCases {
         .getBreeds()
         .pipe(take(1))
         .subscribe((breeds) => {
-          const catApiBreed = breeds.find((b) => b.id === catApiId);
+          const catApiBreed = _.find(breeds, (b) => b.id === catApiId);
 
           if (!catApiBreed)
             throw new NotFoundError(
