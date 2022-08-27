@@ -80,7 +80,7 @@ async function bootstrap() {
     );
 
     const HOST = configService.get('HOST', 'localhost');
-    const PORT = configService.get('PORT', '3000');
+    const PORT = configService.get('PORT', 8080);
 
     await app.listen(PORT);
 
