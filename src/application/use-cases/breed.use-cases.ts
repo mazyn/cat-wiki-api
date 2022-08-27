@@ -35,15 +35,11 @@ export class BreedUseCases {
         let apiBreeds: CatApiBreedModel[] | GetMostSearchedDto[] = _.map(
           r,
           (b) => {
-            b['searchCount'] = _.find(
-              dbBreeds,
-              (x) => x.externalId === b.id,
-            )?.searchCount;
+            b['searchCount'] =
+              _.find(dbBreeds, (x) => x.externalId === b.id)?.searchCount ?? 0;
             return b;
           },
         );
-
-        apiBreeds = _.filter(apiBreeds, (b) => !!b['searchCount']);
 
         apiBreeds = _.orderBy(
           apiBreeds,
