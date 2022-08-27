@@ -1,10 +1,10 @@
 {
   "name": "cat-wiki-api",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "version": "1.0.0",
+  "description": "The CatWiki API made by @mazyn for devchallenges.io",
+  "author": "mazyn",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "nest build",
