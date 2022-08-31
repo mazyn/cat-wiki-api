@@ -6,10 +6,10 @@ import {
 import { map, take } from 'rxjs';
 import _ from 'lodash';
 
-import { GetMostSearchedDto } from 'domain/dtos/breed';
-import { IBreedService, ICatApiService } from 'domain/services';
-import { NotFoundError } from 'application/errors';
-import { CatApiBreedModel } from 'domain/models/cat-api-breed.model';
+import { GetMostSearchedDto } from '../../domain/dtos/breed';
+import { IBreedService, ICatApiService } from '../../domain/services';
+import { NotFoundError } from '../../application/errors';
+import { CatApiBreedModel } from '../../domain/models/cat-api-breed.model';
 
 @Injectable()
 export class BreedUseCases {

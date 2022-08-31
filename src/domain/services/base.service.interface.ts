@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import { IPrismaService } from 'domain/db/prisma.service.interface';
+import { IPrismaService } from '../../domain/db/prisma.service.interface';
 
 export interface GetManyParams<C, W, O> {
   skip?: number;
