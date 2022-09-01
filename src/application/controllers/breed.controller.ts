@@ -16,10 +16,10 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { InternalServerError, NotFoundError } from 'application/errors';
-import { BreedUseCases } from 'application/use-cases';
-import { GetMostSearchedDto } from 'domain/dtos/breed';
-import { IncreaseSearchCountDtoRequest } from 'domain/dtos/breed/increase-search-count.dto';
+import { InternalServerError, NotFoundError } from '../../application/errors';
+import { BreedUseCases } from '../../application/use-cases';
+import { GetMostSearchedDto } from '../../domain/dtos/breed';
+import { IncreaseSearchCountDtoRequest } from '../../domain/dtos/breed/increase-search-count.dto';
 
 @ApiTags('Breeds')
 @Controller('breed')

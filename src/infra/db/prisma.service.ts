@@ -1,6 +1,6 @@
 import { INestApplication, Injectable } from '@nestjs/common';
 
-import { IPrismaService } from 'domain/db/prisma.service.interface';
+import { IPrismaService } from '../../domain/db/prisma.service.interface';
 
 @Injectable()
 export class PrismaService extends IPrismaService {

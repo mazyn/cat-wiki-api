@@ -3,13 +3,13 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { map, take } from 'rxjs';
+import { firstValueFrom, map, Observable } from 'rxjs';
 import _ from 'lodash';
 
-import { GetMostSearchedDto } from 'domain/dtos/breed';
-import { IBreedService, ICatApiService } from 'domain/services';
-import { NotFoundError } from 'application/errors';
-import { CatApiBreedModel } from 'domain/models/cat-api-breed.model';
+import { GetMostSearchedDto } from '../../domain/dtos/breed';
+import { IBreedService, ICatApiService } from '../../domain/services';
+import { NotFoundError } from '../../application/errors';
+import { CatApiBreedModel } from '../../domain/models/cat-api-breed.model';
 
 @Injectable()
 export class BreedUseCases {
@@ -20,7 +20,7 @@ export class BreedUseCases {
     private readonly catApiService: ICatApiService,
   ) {}
 
-  async getMostSearched() {
+  async getMostSearched(): Promise<Observable<GetMostSearchedDto[]>> {
     this.logger.log('Received request to fetch most searched breeds');
 
     const dbBreeds = await this.breedService.getMany({
@@ -56,7 +56,7 @@ export class BreedUseCases {
     );
   }
 
-  async increaseSearchCount(catApiId: string) {
+  async increaseSearchCount(catApiId: string): Promise<void> {
     this.logger.log(
       `Received request to increase search count for breed ID: ${catApiId}`,
     );
@@ -81,27 +81,24 @@ export class BreedUseCases {
         return;
       }
 
-      this.catApiService
-        .getBreeds()
-        .pipe(take(1))
-        .subscribe((breeds) => {
-          const catApiBreed = _.find(breeds, (b) => b.id === catApiId);
+      const catApiBreeds = await firstValueFrom(this.catApiService.getBreeds());
 
-          if (!catApiBreed)
-            throw new NotFoundError(
-              `Couldn't find cat breed for given ID: ${catApiId}`,
-            );
+      const catApiBreed = _.find(catApiBreeds, (b) => b.id === catApiId);
 
-          this.breedService.insert({
-            name: catApiBreed.name,
-            externalId: catApiBreed.id,
-            searchCount: 1,
-          });
+      if (!catApiBreed)
+        throw new NotFoundError(
+          `Couldn't find cat breed for given ID: ${catApiId}`,
+        );
 
-          this.logger.log('Breed search count updated successfully');
-        });
+      this.breedService.insert({
+        name: catApiBreed.name,
+        externalId: catApiBreed.id,
+        searchCount: 1,
+      });
+
+      this.logger.log('Breed search count updated successfully');
     } catch (e) {
-      this.logger.error(e);
+      this.logger.error(e?.message ?? e?.response?.data ?? e);
       throw new InternalServerErrorException(
         'Something went wrong while updating the search count',
       );
