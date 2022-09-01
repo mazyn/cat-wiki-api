@@ -1,11 +1,11 @@
+import { HttpModule } from '@nestjs/axios';
 import { Test } from '@nestjs/testing';
 import { Observable, of } from 'rxjs';
 
-import { CatApiBreedModel } from 'domain/models/cat-api-breed.model';
+import { CatApiBreedModel } from '../../domain/models/cat-api-breed.model';
+import { CatApiPhotoModel } from '../../domain/models/cat-api-photo.model';
 import { ICatApiService } from '../../domain/services/cat-api.service.interface';
 import { CatApiService } from './cat-api.service';
-import { HttpModule } from '@nestjs/axios';
-import { CatApiPhotoModel } from 'domain/models/cat-api-photo.model';
 
 const mockCatApiBreedModel: CatApiBreedModel = {
   weight: {

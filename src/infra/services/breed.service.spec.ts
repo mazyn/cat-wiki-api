@@ -1,9 +1,9 @@
 import { Test } from '@nestjs/testing';
+import { Breed, Prisma } from '@prisma/client';
 
 import { PrismaModule } from '../../infra/ioc';
 import { IBreedService } from '../../domain/services';
 import { BreedService } from './breed.service';
-import { Breed, Prisma } from '.prisma/client';
 
 const mockBreed: Breed = {
   id: 'sava',

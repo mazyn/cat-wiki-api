@@ -5,8 +5,8 @@ import { catchError, map, Observable, take } from 'rxjs';
 
 import { ICatApiService } from '../../domain/services/cat-api.service.interface';
 import { handleAxiosError } from '../../application/shared/utils';
-import { CatApiBreedModel } from 'domain/models/cat-api-breed.model';
-import { CatApiPhotoModel } from 'domain/models/cat-api-photo.model';
+import { CatApiBreedModel } from '../../domain/models/cat-api-breed.model';
+import { CatApiPhotoModel } from '../../domain/models/cat-api-photo.model';
 
 @Injectable()
 export class CatApiService extends ICatApiService {
