@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Breed, Prisma } from '@prisma/client';
 
-import { IPrismaService } from 'domain/db/prisma.service.interface';
+import { IPrismaService } from '../../domain/db/prisma.service.interface';
 import { IBreedService, GetManyParams } from '../../domain/services';
 
 @Injectable()
